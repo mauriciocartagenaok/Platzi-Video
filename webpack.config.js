@@ -6,7 +6,8 @@ module.exports={
     entry:'./src/index.js',
     output:{
         path:path.resolve(__dirname,'dist'),
-        filename:'bundle.js'
+        filename:'bundle.js',
+        publicPath:'/'
     },
     resolve:{
         extensions:['.js','.jsx']
@@ -54,6 +55,10 @@ module.exports={
                 ]
             }
         ]
+    },
+    //dev Server activa para poder navegador con read <Router/>
+    devServer:{
+        historyApiFallback:true,
     },
     plugins:[
         new HtmlWebPackPlugin({

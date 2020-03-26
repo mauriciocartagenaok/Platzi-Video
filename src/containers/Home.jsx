@@ -1,31 +1,33 @@
 import React,{ useState,useEffect }   from   'react';
-import Header                         from   '../components/Header';
+import { connect }                    from   'react-redux';
 import Search                         from   '../components/Search';
 import Categories                     from   '../components/Categories';
 import CarouselItem                   from   '../components/CarouselItem';
-import Footer                         from   '../components/Footer';
 import Carousel                       from   '../components/Carousel';
 import useInitialState                from   '../hooks/useInitialState';
 
 import '../asset/styles/App.scss';
 
-const API = 'http://localhost:3000/initalState';
+// const API = 'http://localhost:3000/initalState';
 
-const App=()=>{
-    const initialState = useInitialState(API);
+const Home=({myList,trends,originals})=>{
+    // const initialState = useInitialState(API);
     
-    return initialState.length===0 ? <h1>Loading .....</h1> :(  
-       
-        <div className="App">
-                <Header></Header>
-                <Search></Search>
+    // return initialState.length===0 ? <h1>Loading .....</h1> :(  
+       return(
+        <>
+                <Search isHome></Search>
                
                 <Categories title="Mi lista">
                     <Carousel>
                     {
-                        initialState.mylist.length >0 &&
-                        initialState.mylist.map(list =>
-                                <CarouselItem key={list.id} {...list} />
+                        myList.length >0 &&
+                        myList.map(list =>
+                                <CarouselItem 
+                                key={list.id} 
+                                {...list} 
+                                isList
+                                />
                         )
                     }   
                     </Carousel>
@@ -34,7 +36,7 @@ const App=()=>{
                 
                 <Categories title="Tendencias">
                     <Carousel>
-                            {initialState.trends.map(item=>  
+                            {trends.map(item=>  
                                 <CarouselItem key={item.id} {...item} />
                             )}
                        
@@ -43,14 +45,20 @@ const App=()=>{
                 <Categories title="Originas de Platzi Video">
                     <Carousel>
                         {
-                            initialState.originals.map(origin=>
+                            originals.map(origin=>
                                 <CarouselItem key={origin.id} {...origin}/>
                             )
                         }
                     </Carousel>
                 </Categories>
-                <Footer></Footer>
-        </div>
-    );
+        </>
+       );
 };
-export default App;
+const mapStateToProps = state =>{
+    return{
+        myList:state.myList,
+        trends:state.trends,
+        originals:state.originals,
+    };
+};
+export default connect(mapStateToProps,null)(Home);
