@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getVideoSource } from "../actions";
-import { Redirect } from "react-router-dom";
 import NotFound from "./NotFound";
 import "../asset/styles/components/Player.scss";
 
@@ -9,9 +8,11 @@ const Player = (props) => {
   const { id } = props.match.params;
   const hasPlaying = Object.keys(props.playing).length > 0;
 
+  console.log(props.playing)
+
   useEffect(() => {
     props.getVideoSource(id);
-  }, []);
+  }, [id]);
 
   return hasPlaying ? (
     <div className="Player">
